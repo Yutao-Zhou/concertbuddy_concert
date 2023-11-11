@@ -47,4 +47,7 @@ public class ConcertService {
         concertRepository.deleteById(concertId);
     }
 
+    public void TicketmasterSync() {
+        // Ticketmaster API call goes here
+    }
 }

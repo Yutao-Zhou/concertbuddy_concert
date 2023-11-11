@@ -44,4 +44,9 @@ public class ConcertController {
     public void deleteConcert(@PathVariable("concertId") UUID concertId) {
         concertService.deleteConcert(concertId);
     }
+
+    @PutMapping(path="TicketmasterSync")
+    public void TicketmasterSync() {
+        concertService.TicketmasterSync();
+    }
 }
