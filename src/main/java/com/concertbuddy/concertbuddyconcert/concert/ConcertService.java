@@ -17,7 +17,11 @@ public class ConcertService {
         this.concertRepository = concertRepository;
     }
 
-    public List<Concert> getConcerts(int page, int size) {
+    public List<Concert> getConcerts() {
+        return concertRepository.findAll();
+    }
+
+    public List<Concert> getConcertsPage(int page, int size) {
         return concertRepository.findAll(PageRequest.of(page, size)).getContent();
     }
 

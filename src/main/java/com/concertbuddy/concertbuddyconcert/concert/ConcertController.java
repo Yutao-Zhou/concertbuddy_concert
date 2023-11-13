@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -20,8 +21,16 @@ public class ConcertController {
     }
 
     @GetMapping()
-    public List<Concert> getConcerts(@RequestParam("page") int page, @RequestParam("size") int size) {
-        return concertService.getConcerts(page, size);
+    public List<Concert> getConcerts(@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+        if (page.isEmpty() && size.isEmpty()){
+            return concertService.getConcerts();
+        } else if (page.isEmpty() || size.isEmpty()) {
+            throw new IllegalStateException(
+                    "page and size must be both empty or both not empty"
+            );
+        } else {
+            return concertService.getConcertsPage(page.get(), size.get());
+        }
     }
 
     @GetMapping(path="{concertId}")
