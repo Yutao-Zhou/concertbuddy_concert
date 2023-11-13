@@ -2,6 +2,7 @@ package com.concertbuddy.concertbuddyconcert.concert;
 
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +19,9 @@ public class ConcertController {
         this.concertService = concertService;
     }
 
-    @GetMapping
-    public List<Concert> getConcerts() {
-        return concertService.getConcerts();
+    @GetMapping(params = { "page", "size" })
+    public List<Concert> getConcerts(@RequestParam("page") int page, @RequestParam("size") int size) {
+        return concertService.getConcerts(page, size);
     }
 
     @GetMapping(path="{concertId}")
