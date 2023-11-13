@@ -2,6 +2,7 @@ package com.concertbuddy.concertbuddyconcert.concert;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.javatuples.Pair;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,8 +17,9 @@ public class Concert {
     private UUID id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    private String usersInfo;
+    @ElementCollection
+    @JsonIgnore
+    private List<Pair<UUID, Status>> usersInfo;
     @Column(nullable = false)
     private String venue;
     @Column(nullable = false)
@@ -36,7 +38,7 @@ public class Concert {
     }
 
 
-    public Concert(UUID id, String name, String usersInfo, String venue, String performingArtist, LocalDate dateTime, String genre, String subGenre, Double cost) {
+    public Concert(UUID id, String name, List<Pair<UUID, Status>> usersInfo, String venue, String performingArtist, LocalDate dateTime, String genre, String subGenre, Double cost) {
         this.id = id;
         this.name = name;
         this.usersInfo = usersInfo;
@@ -48,7 +50,7 @@ public class Concert {
         this.cost = cost;
     }
 
-    public Concert(String name, String usersInfo, String venue, String performingArtist, LocalDate dateTime, String genre, String subGenre, Double cost) {
+    public Concert(String name, List<Pair<UUID, Status>> usersInfo, String venue, String performingArtist, LocalDate dateTime, String genre, String subGenre, Double cost) {
         this.name = name;
         this.usersInfo = usersInfo;
         this.venue = venue;
@@ -75,11 +77,11 @@ public class Concert {
         this.name = name;
     }
 
-    public String getUsersInfo() {
+    public List<Pair<UUID, Status>> getUsersInfo() {
         return usersInfo;
     }
 
-    public void setUsersInfo(String usersInfo) {
+    public void setUsersInfo(List<Pair<UUID, Status>> usersInfo) {
         this.usersInfo = usersInfo;
     }
 
@@ -135,9 +137,14 @@ public class Concert {
     public String toString() {
         return "Concert{" +
                 "id=" + id +
-                ", name='" + usersInfo + '\'' +
-                ", artist='" + performingArtist + '\'' +
+                ", name='" + name + '\'' +
+                ", usersInfo=" + usersInfo +
+                ", venue='" + venue + '\'' +
+                ", performingArtist='" + performingArtist + '\'' +
+                ", dateTime=" + dateTime +
                 ", genre='" + genre + '\'' +
+                ", subGenre='" + subGenre + '\'' +
+                ", cost=" + cost +
                 '}';
     }
 }

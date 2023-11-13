@@ -1,5 +1,6 @@
 package com.concertbuddy.concertbuddyconcert.concert;
 
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +17,6 @@ public class ConcertController {
     public ConcertController(ConcertService concertService) {
         this.concertService = concertService;
     }
-
-    @GetMapping(path="test")
-    public String getConcertById() { return "Hello World. Ping success."; }
 
     @GetMapping
     public List<Concert> getConcerts() {
@@ -43,6 +41,21 @@ public class ConcertController {
     @DeleteMapping(path="{concertId}")
     public void deleteConcert(@PathVariable("concertId") UUID concertId) {
         concertService.deleteConcert(concertId);
+    }
+
+    @GetMapping(path="{concertId}/usersInfo")
+    public List<Pair<UUID, Status>> getUsersInfo(@PathVariable("concertId") UUID concertId) {
+        return concertService.getConcertById(concertId).getUsersInfo();
+    }
+
+    @PutMapping(path="{concertId}/usersInfo/{userId}")
+    public void updateUserInfo(@PathVariable("concertId") UUID concertId, @PathVariable("userId") UUID userId, @RequestBody Status status) {
+        concertService.addNewUserInfo(concertId, userId, status);
+    }
+
+    @DeleteMapping(path="{concertId}/usersInfo/{userId}")
+    public void deleteUserInfo(@PathVariable("concertId") UUID concertId,@PathVariable("userId") UUID userId, @RequestBody Status status) {
+        concertService.deleteUserInfo(concertId, userId, status);
     }
 
     @PutMapping(path="TicketmasterSync")
