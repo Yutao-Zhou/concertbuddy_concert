@@ -19,7 +19,7 @@ public class ConcertController {
         this.concertService = concertService;
     }
 
-    @GetMapping(params = { "page", "size" })
+    @GetMapping()
     public List<Concert> getConcerts(@RequestParam("page") int page, @RequestParam("size") int size) {
         return concertService.getConcerts(page, size);
     }
