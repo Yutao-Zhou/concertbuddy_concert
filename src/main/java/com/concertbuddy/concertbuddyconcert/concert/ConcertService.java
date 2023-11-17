@@ -1,8 +1,16 @@
 package com.concertbuddy.concertbuddyconcert.concert;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,7 +62,57 @@ public class ConcertService {
     }
 
     public void TicketmasterSync() {
-        // Ticketmaster API call goes here
+        final String uri = "https://app.ticketmaster.com/discovery/v2/events.json?size=200&apikey=V3mzdMS0MfPMG5g7EaueEw7QuGHV4RB9";
+
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.getForObject(uri, String.class);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try {
+            EventResponse eventResponse = objectMapper.readValue(response, EventResponse.class);
+
+            if (eventResponse != null && eventResponse.get_embedded() != null) {
+                List<Event> events = eventResponse.get_embedded().getEvents();
+
+                for (Event event : events) {
+                    String eventName = event.getName();
+                    String venue = "";
+                    String joinedArtists = "";
+                    LocalDate eventDates;
+                    String genre = "";
+                    String subGenre = "";
+
+                    List<EventImage> eventImages = event.getImages();
+                    List<Venue> venues = event.get_embedded().getVenues();
+                    List<Attraction> attractions = event.get_embedded().getAttractions();
+                    if (!venues.isEmpty()) {
+                        venue = venues.get(0).getName() + ',' + venues.get(0).getAddress().getLine1();
+                    }
+                    if (!attractions.isEmpty()) {
+                        ArrayList<String> performingArtists = new ArrayList<>();
+                        for (Attraction attraction : attractions) {
+                            performingArtists.add(attraction.getName());
+                        }
+                        joinedArtists = String.join(", ", performingArtists);
+                    }
+                    eventDates = event.getDates().getStart().getLocalDate();
+                    List<Classification> eventClassifications = event.getClassifications();
+                    if (!eventClassifications.isEmpty()) {
+                        genre = eventClassifications.get(0).getGenre().getName();
+                        subGenre = eventClassifications.get(0).getSubGenre().getName();
+                    }
+
+                    Concert concert = new Concert(eventName, venue, joinedArtists, eventDates, genre, subGenre);
+                    concertRepository.save(concert);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void addNewUserInfo(UUID concertId, UUID userId, Status status) {

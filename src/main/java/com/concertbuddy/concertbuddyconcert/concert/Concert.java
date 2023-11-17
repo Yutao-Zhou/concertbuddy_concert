@@ -30,15 +30,8 @@ public class Concert {
     private String genre;
     @Column(nullable = false)
     private String subGenre;
-    @Column(nullable = false)
-    private Double cost;
 
-
-    public Concert() {
-    }
-
-
-    public Concert(UUID id, String name, List<Pair<UUID, Status>> usersInfo, String venue, String performingArtist, LocalDate dateTime, String genre, String subGenre, Double cost) {
+    public Concert(UUID id, String name, List<Pair<UUID, Status>> usersInfo, String venue, String performingArtist, LocalDate dateTime, String genre, String subGenre) {
         this.id = id;
         this.name = name;
         this.usersInfo = usersInfo;
@@ -47,10 +40,22 @@ public class Concert {
         this.dateTime = dateTime;
         this.genre = genre;
         this.subGenre = subGenre;
-        this.cost = cost;
     }
 
-    public Concert(String name, List<Pair<UUID, Status>> usersInfo, String venue, String performingArtist, LocalDate dateTime, String genre, String subGenre, Double cost) {
+    public Concert() {
+
+    }
+
+    public Concert(String name, String venue, String performingArtist, LocalDate dateTime, String genre, String subGenre) {
+        this.name = name;
+        this.venue = venue;
+        this.performingArtist = performingArtist;
+        this.dateTime = dateTime;
+        this.genre = genre;
+        this.subGenre = subGenre;
+    }
+
+    public Concert(String name, List<Pair<UUID, Status>> usersInfo, String venue, String performingArtist, LocalDate dateTime, String genre, String subGenre) {
         this.name = name;
         this.usersInfo = usersInfo;
         this.venue = venue;
@@ -58,7 +63,6 @@ public class Concert {
         this.dateTime = dateTime;
         this.genre = genre;
         this.subGenre = subGenre;
-        this.cost = cost;
     }
 
     public UUID getId() {
@@ -125,14 +129,6 @@ public class Concert {
         this.subGenre = subGenre;
     }
 
-    public Double getCost() {
-        return cost;
-    }
-
-    public void setCost(Double cost) {
-        this.cost = cost;
-    }
-
     @Override
     public String toString() {
         return "Concert{" +
@@ -143,8 +139,7 @@ public class Concert {
                 ", performingArtist='" + performingArtist + '\'' +
                 ", dateTime=" + dateTime +
                 ", genre='" + genre + '\'' +
-                ", subGenre='" + subGenre + '\'' +
-                ", cost=" + cost +
+                ", subGenre='" + subGenre +
                 '}';
     }
 }
