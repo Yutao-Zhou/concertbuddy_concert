@@ -12,6 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "api/v1/concerts")
+@CrossOrigin(origins = "*")
 public class ConcertController {
 
     private final ConcertService concertService;
