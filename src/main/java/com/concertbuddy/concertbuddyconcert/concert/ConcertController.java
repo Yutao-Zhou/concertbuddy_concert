@@ -74,4 +74,7 @@ public class ConcertController {
     public void TicketmasterSync() {
         concertService.TicketmasterSync();
     }
+
+    @GetMapping(path="CICD")
+    public String cicdTest() { return concertService.cicdTest(); }
 }

@@ -168,4 +168,8 @@ public class ConcertService {
         concertById.setUsersInfo(UsersInfo);
         concertRepository.save(concertById);
     }
+
+    public String cicdTest() {
+        return "This endpoint is reserved for CI/CD demo.";
+    }
 }
