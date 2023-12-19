@@ -13,4 +13,7 @@ public interface ConcertRepository extends JpaRepository<Concert, UUID> {
 
     List<Concert> findAllByName(String name);
 
+    @Query("SELECT c FROM Concert c WHERE c.genre = ?1 OR c.genre = ?2 OR c.genre = ?3 OR c.genre = ?4")
+    List<Concert> findConcertByGenre(String genre1, String genre2, String genre3, String genre4);
+
 }

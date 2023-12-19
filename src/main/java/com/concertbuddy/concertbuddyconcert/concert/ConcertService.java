@@ -26,11 +26,12 @@ public class ConcertService {
     }
 
     public List<Concert> getConcerts() {
-        return concertRepository.findAll();
+        return concertRepository.findConcertByGenre("Rock", "Country", "R&B", "Pop");
     }
 
     public List<Concert> getConcertsPage(int page, int size) {
-        return concertRepository.findAll(PageRequest.of(page, size)).getContent();
+        List<Concert> AllConcerts = concertRepository.findConcertByGenre("Rock", "Country", "R&B", "Pop");
+        return AllConcerts.subList(page*size, page*size+size);
     }
 
     public Concert getConcertById(UUID concertId) {
