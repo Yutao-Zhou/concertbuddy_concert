@@ -62,7 +62,7 @@ public class ConcertService {
     }
 
     public void TicketmasterSync() {
-        final String uri = "https://app.ticketmaster.com/discovery/v2/events.json?size=200&apikey=V3mzdMS0MfPMG5g7EaueEw7QuGHV4RB9";
+        final String uri = "https://app.ticketmaster.com/discovery/v2/events.json?size=200&apikey=V3mzdMS0MfPMG5g7EaueEw7QuGHV4RB9&classificationName=music";
 
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(uri, String.class);
