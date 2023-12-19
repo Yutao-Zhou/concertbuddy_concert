@@ -171,6 +171,6 @@ public class ConcertService {
     }
 
     public String cicdTest() {
-        return "This endpoint is reserved for CI/CD demo.";
+        return "This endpoint is reserved for CI/CD demo. Added new string for the demo.";
     }
 }
