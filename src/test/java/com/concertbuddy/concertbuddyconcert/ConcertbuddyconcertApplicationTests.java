@@ -20,7 +20,7 @@ class ConcertbuddyconcertApplicationTests {
 
 	@Test
 	public void testCICDEndpointReturnCorrectString() {
-		assertEquals(service.cicdTest(), "This endpoint is reserved for CI/CD demo. Change the string for demo.");
+		assertEquals(service.cicdTest(), "This endpoint is reserved for CI/CD demo.");
 	}
 
 }
